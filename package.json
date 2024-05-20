@@ -5,8 +5,8 @@
   "main": "dist/swiftgen.js",
   "scripts": {
     "build": "tsc && npm run copy-config && npm run copy-tests",
-    "copy-config": "cpx src/config/config.json dist/config/",
-    "copy-tests": "cpx tests/**/* dist/tests",
+    "copy-config": "cpx \"src/config/config.json\" \"dist/config/\" --verbose",
+    "copy-tests": "cpx \"tests/**/*\" \"dist/tests/\" --verbose",
     "start": "node dist/swiftgen.js"
   },
   "keywords": [],
