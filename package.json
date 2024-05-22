@@ -14,7 +14,11 @@
     "README.md",
     "LICENSE"
   ],
-  "keywords": ["swift", "typescript", "codegen"],
+  "keywords": [
+    "swift",
+    "typescript",
+    "codegen"
+  ],
   "author": {
     "name": "Justin Bush",
     "email": "buzsh@users.noreply.github.com",
@@ -27,6 +31,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "commander": "^8.3.0",
     "ts-morph": "^22.0.0",
     "typescript": "^5.4.5"
   },
