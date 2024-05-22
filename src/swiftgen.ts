@@ -40,7 +40,7 @@ let combinedTypeAliases: any[] = [];
 inputFiles.forEach((filePath: string) => {
   try {
     const sourceFile = initializeProject(filePath);
-    combinedVariables = combinedVariables.concat(extractVariables(sourceFile));
+    combinedVariables = combinedVariables.concat(extractVariables(sourceFile, debug));
     combinedFunctions = combinedFunctions.concat(extractFunctions(sourceFile, debug));
     combinedEnums = combinedEnums.concat(extractEnums(sourceFile));
     combinedTypeAliases = combinedTypeAliases.concat(extractTypeAliases(sourceFile));
