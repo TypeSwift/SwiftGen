@@ -7,7 +7,7 @@ import fs from 'fs';
 const program = new Command();
 
 program
-  .option('-c, --config <path>', 'set config path', 'config/config.json')
+  .option('-c, --config <path>', 'set config path', 'config.json')
   .parse(process.argv);
 
 const options = program.opts();
