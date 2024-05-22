@@ -3,5 +3,6 @@
   "outputDir": "output",
   "outputPrefix": "",
   "outputSuffix": ".swift",
-  "outputFileName": "TypeSwift"
+  "outputFileName": "TypeSwift",
+  "debug": false
 }

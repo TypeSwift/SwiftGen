@@ -26,6 +26,7 @@ function initializeProject(filePath: string) {
 }
 
 const inputDir = config.inputDir;
+const debug = config.debug || false;
 console.log("Input directory:", inputDir);
 const inputFiles = getAllFiles(inputDir);
 console.log("Input files:", inputFiles);
@@ -39,7 +40,7 @@ inputFiles.forEach((filePath: string) => {
   try {
     const sourceFile = initializeProject(filePath);
     combinedVariables = combinedVariables.concat(extractVariables(sourceFile));
-    combinedFunctions = combinedFunctions.concat(extractFunctions(sourceFile));
+    combinedFunctions = combinedFunctions.concat(extractFunctions(sourceFile, debug));
     combinedEnums = combinedEnums.concat(extractEnums(sourceFile));
     combinedTypeAliases = combinedTypeAliases.concat(extractTypeAliases(sourceFile));
   } catch (error) {

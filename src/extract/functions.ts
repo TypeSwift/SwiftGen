@@ -1,14 +1,18 @@
-import { Node, ts } from "ts-morph";
+import { Node, ts, VariableDeclaration } from "ts-morph";
 import { convertType } from "../utils/typeMap";
 
-export function extractFunctions(sourceFile: any) {
+let debug = false;
+
+export function extractFunctions(sourceFile: any, configDebug: boolean) {
+  debug = configDebug; // Set the debug flag from the config
+
   const functions: any[] = [];
 
-  function recursivelyExtractFunctions(node: Node) {
+  function recursivelyExtractFunctions(node: Node, isInsideComponent = false) {
     node.forEachChild(child => {
       if (Node.isFunctionDeclaration(child) || Node.isFunctionExpression(child) || Node.isArrowFunction(child)) {
         const functionName = child.getSymbol()?.getName();
-        if (functionName && !isReactComponent(node.getParent())) {
+        if (functionName && !isTopLevelReactComponent(node.getParent())) {
           functions.push({
             name: functionName,
             parameters: child.getParameters().map((param: any) => ({
@@ -25,7 +29,7 @@ export function extractFunctions(sourceFile: any) {
         const initializer = child.getInitializer();
         if (initializer && (Node.isFunctionExpression(initializer) || Node.isArrowFunction(initializer))) {
           const functionName = child.getName();
-          if (functionName && !isReactComponent(node.getParent())) {
+          if (functionName && !isTopLevelReactComponent(child)) {
             functions.push({
               name: functionName,
               parameters: initializer.getParameters().map((param: any) => ({
@@ -39,7 +43,7 @@ export function extractFunctions(sourceFile: any) {
         }
       }
 
-      recursivelyExtractFunctions(child);
+      recursivelyExtractFunctions(child, isInsideComponent || isReactComponent(child));
     });
   }
 
@@ -67,11 +71,45 @@ export function extractFunctions(sourceFile: any) {
     }
   });
 
-  return functions.filter(func => func.name && !func.name.startsWith('__') && func.name !== 'anonymous');
+  // Debugging: Print all functions identified before filtering
+  if (debug) {
+    console.log("All functions before filtering:", functions);
+  }
+
+  // Filter out functions with generic or unclear names
+  const filteredFunctions = functions.filter(func => func.name && !func.name.startsWith('__') && func.name !== 'anonymous' && !isTopLevelReactComponentName(func.name));
+
+  // Debugging: Print filtered functions
+  if (debug) {
+    console.log("Filtered functions:", filteredFunctions);
+  }
+
+  return filteredFunctions;
 }
 
 function isReactComponent(node: Node | undefined) {
   if (!node) return false;
   const type = node.getType().getText();
+  if (debug) {
+    console.log(`Checking if node is a React component: ${type}`);
+  }
   return type.startsWith('React.FC') || type.startsWith('React.Component') || type.includes('ReactElement');
+}
+
+function isTopLevelReactComponent(node: Node | undefined) {
+  if (!node || !Node.isVariableDeclaration(node)) return false;
+  const initializer = node.getInitializer();
+  if (initializer && (Node.isFunctionExpression(initializer) || Node.isArrowFunction(initializer))) {
+    const type = initializer.getType().getText();
+    if (debug) {
+      console.log(`Checking if node is a top-level React component: ${type}`);
+    }
+    return type.startsWith('React.FC') || type.startsWith('React.Component') || type.includes('ReactElement');
+  }
+  return false;
+}
+
+function isTopLevelReactComponentName(name: string) {
+  // Add any specific naming conventions you want to exclude, like starting with an uppercase letter
+  return /^[A-Z]/.test(name);
 }
