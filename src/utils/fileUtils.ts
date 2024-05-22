@@ -39,7 +39,7 @@ export function getAllFiles(dirPath: string, arrayOfFiles: string[] = []): strin
     const fullPath = path.join(dirPath, file);
     if (fs.statSync(fullPath).isDirectory()) {
       arrayOfFiles = getAllFiles(fullPath, arrayOfFiles);
-    } else if (file.endsWith('.ts')) {
+    } else if (file.endsWith('.ts') || file.endsWith('.tsx')) {
       arrayOfFiles.push(fullPath);
     }
   });
