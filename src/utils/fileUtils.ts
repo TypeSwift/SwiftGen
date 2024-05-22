@@ -2,11 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import os from 'os';
 
-export function readConfig(configPath: string) {
-  const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-  config.inputDir = resolveDir(config.inputDir);
-  config.outputDir = resolveDir(config.outputDir);
-  return config;
+export function readJsonFile(filePath: string) {
+  try {
+    const content = fs.readFileSync(filePath, 'utf8');
+    return JSON.parse(content);
+  } catch (error) {
+    console.error(`Error reading JSON file at ${filePath}:`, error);
+    throw error;
+  }
 }
 
 export function resolveDir(dir: string) {
