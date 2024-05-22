@@ -1,5 +1,5 @@
-import path from 'path';
 import { Project } from "ts-morph";
+import path from 'path';
 import { readJsonFile, writeSwiftCodeToFile, getAllFiles } from './utils/fileUtils';
 import { extractFunctions } from './extract/functions';
 import { extractVariables } from './extract/variables';
@@ -13,6 +13,7 @@ export function runSwiftGen(config: any) {
 
   const packageJsonPath = path.join(__dirname, '..', 'package.json');
   const packageInfo = readJsonFile(packageJsonPath);
+  console.log("Loaded package info:", packageInfo);
 
   function initializeProject(filePath: string) {
     const project = new Project();
@@ -32,6 +33,7 @@ export function runSwiftGen(config: any) {
 
   inputFiles.forEach((filePath: string) => {
     try {
+      console.log(`Processing file: ${filePath}`);
       const sourceFile = initializeProject(filePath);
       combinedVariables = combinedVariables.concat(extractVariables(sourceFile, debug));
       combinedFunctions = combinedFunctions.concat(extractFunctions(sourceFile, debug));
