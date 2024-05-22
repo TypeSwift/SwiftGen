@@ -1,4 +1,5 @@
 import { convertType } from "../utils/typeMap";
+import { ensureUniqueNames } from "./uniqueNameChecker";
 
 const now = new Date();
 const dateTime = now.toISOString().replace('T', ' ').split('.')[0];
@@ -93,28 +94,30 @@ function generateJsStringProperty(variables: string[], functions: any[]): string
 }
 
 export function generateSwiftCode(variables: string[], functions: any[], enums: any[], typeAliases: any[], packageInfo: any) {
+  const { uniqueVariables, uniqueFunctions, uniqueEnums, uniqueTypeAliases } = ensureUniqueNames(variables, functions, enums, typeAliases);
+
   let swiftCode = generateHeader(packageInfo);
 
   swiftCode += `/// An enumeration of TypeScript identifiers generated to be used in Swift code.\n`
   swiftCode += `enum TypeSwift {\n`;
 
-  if (variables.length > 0) {
-    swiftCode += generateVariableCases(variables);
+  if (uniqueVariables.length > 0) {
+    swiftCode += generateVariableCases(uniqueVariables);
   }
 
-  if (functions.length > 0) {
-    swiftCode += generateFunctionCases(functions);
+  if (uniqueFunctions.length > 0) {
+    swiftCode += generateFunctionCases(uniqueFunctions);
   }
 
-  if (enums.length > 0) {
-    swiftCode += generateEnumCases(enums);
+  if (uniqueEnums.length > 0) {
+    swiftCode += generateEnumCases(uniqueEnums);
   }
 
-  if (typeAliases.length > 0) {
-    swiftCode += generateTypeAliasCases(typeAliases);
+  if (uniqueTypeAliases.length > 0) {
+    swiftCode += generateTypeAliasCases(uniqueTypeAliases);
   }
 
-  swiftCode += generateJsStringProperty(variables, functions);
+  swiftCode += generateJsStringProperty(uniqueVariables, uniqueFunctions);
 
   swiftCode += `}\n`;
   return swiftCode;
