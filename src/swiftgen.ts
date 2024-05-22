@@ -13,7 +13,6 @@ export function runSwiftGen(config: any) {
 
   const packageJsonPath = path.join(__dirname, '..', 'package.json');
   const packageInfo = readJsonFile(packageJsonPath);
-  console.log("Loaded package info:", packageInfo);
 
   function initializeProject(filePath: string) {
     const project = new Project();
