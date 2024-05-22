@@ -7,9 +7,10 @@
     "swiftgen": "./dist/index.js"
   },
   "scripts": {
-    "build": "tsc && npm run copy-config",
+    "build": "tsc && npm run copy-config && npm run add-shebang",
     "copy-config": "cpx \"src/config/config.json\" \"dist/config/\" --verbose",
-    "start": "node dist/swiftgen.js"
+    "start": "node dist/index.js",
+    "add-shebang": "node dist/utils/addShebang.js"
   },
   "files": [
     "dist",
