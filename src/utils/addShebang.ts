@@ -9,5 +9,3 @@ const fileContent = fs.readFileSync(filePath, 'utf8');
 
 // Prepend the shebang line
 fs.writeFileSync(filePath, shebang + fileContent);
-
-console.log(`Added shebang to ${filePath}`);
