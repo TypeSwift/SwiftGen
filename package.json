@@ -1,12 +1,11 @@
 {
   "name": "swiftgen",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Generate typesafe Swift code using input TypeScript code.",
   "main": "dist/swiftgen.js",
   "scripts": {
-    "build": "tsc && npm run copy-config && npm run copy-tests",
+    "build": "tsc && npm run copy-config",
     "copy-config": "cpx \"src/config/config.json\" \"dist/config/\" --verbose",
-    "copy-tests": "cpx \"tests/**/*\" \"dist/tests/\" --verbose",
     "start": "node dist/swiftgen.js"
   },
   "files": [
