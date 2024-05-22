@@ -4,7 +4,7 @@
   "description": "Generate typesafe Swift code using input TypeScript code.",
   "main": "dist/index.js",
   "bin": {
-    "swiftgen": "./dist/index.js"
+    "swiftgen": "dist/index.js"
   },
   "scripts": {
     "build": "tsc && npm run copy-config && npm run add-shebang",
