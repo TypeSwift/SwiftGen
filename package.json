@@ -1,6 +1,6 @@
 {
   "name": "swiftgen",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Generate typesafe Swift code using input TypeScript code.",
   "main": "dist/index.js",
   "bin": {

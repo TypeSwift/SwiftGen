@@ -78,7 +78,11 @@ function generateJsStringProperty(variables: string[], functions: any[]): string
   });
 
   functions.forEach(func => {
-    const paramNames = func.parameters.map((param: any) => `\\(${param.name})`).join(', ');
+    const paramNames = func.parameters.map((param: any) => {
+      const wrappedParam = param.type === 'String' ? `'\\(${param.name})'` : `\\(${param.name})`;
+      return wrappedParam;
+    }).join(', ');
+
     if (func.parameters.length > 0) {
       code += `    case .${func.name}(${func.parameters.map((param: any) => `let ${param.name}`).join(', ')}):\n`;
       code += `      return "${func.name}(${paramNames})"\n`;
