@@ -76,3 +76,33 @@ npm install -g swiftgen
 ### Additional Information
 
 For more details, refer to the [TypeSwift project on GitHub](https://github.com/TypeSwift/TypeSwift).
+
+## TODO
+
+### Generate WKScriptMessageHandlers
+
+```ts
+declare global {
+  interface Window {
+    webkit: {
+      messageHandlers: {
+        copilotMessageProcessed: {
+          postMessage: (message: string) => void;
+        };
+        copilotSidebarHidden: {
+          postMessage: (message: string) => void;
+        };
+        copilotPopupHidden: {
+          postMessage: (message: string) => void;
+        };
+      };
+    };
+    sendMessageToCopilot: (message: string) => void;
+    showCopilotSidebar: () => void;
+    hideCopilotSidebar: () => void;
+    showCopilotPopup: () => void;
+    hideCopilotPopup: () => void;
+  }
+}
+```
+
